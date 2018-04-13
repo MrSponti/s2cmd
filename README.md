@@ -7,9 +7,23 @@ You can use a 2,4 GHz Wireless Remote with a microphone to quickly and easily re
 
 ## Installation
 
+Create a installation folder and navigate into this folder:
 ```
-npm install s2cmd
+mkdir ~/s2cmd
+cd ~/s2cmd
 ```
+
+Clone this repository:
+```
+git clone https://github.com/MrSponti/s2cmd.git
+```
+
+Install the node dependencies.
+```
+npm install
+```
+
+Configure the module by editing the configuration file `config.js`.
 
 ## Dependencies
 
