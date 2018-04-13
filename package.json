@@ -1,0 +1,21 @@
+{
+  "name": "s2cmd",
+  "version": "1.0.0",
+  "description": "Speech recognition with front end SONUS",
+  "main": "s2cms.js",
+  "scripts": {
+    "test": "-"
+  },
+  "keywords": [
+    "sonus",
+    "snowboy",
+    "googleSpeechAPI"
+  ],
+  "author": "Mr.Sponti",
+  "license": "MIT",
+  "dependencies": {
+    "onoff": "^1.1.7",
+    "request": "^2.85.0",
+    "sonus": "^0.1.9"
+  }
+}
