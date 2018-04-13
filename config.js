@@ -1,16 +1,17 @@
 /**
- * Config file for speech recognition modul 'srpimatic.js'
+ * Config file for speech recognition modul 's2cmd.js'
  *
  * (c) Mr. Sponti           latest update: 13.04.2018
  *
- * This file contains the configuration parameter for module as well as the word defintions
+ * This file contains the configuration parameter for the module as well as the word defintions
  * to build a formated and unique instruction from a spoken text.
  * The words of the spoken instruction will be filtered to build a unique command consisting of
  *  
  * ==> 4 elements:      zone:object:attribute:command                
  *        example:      livingroom:light:mainlight:on
  *
- *  The combination of zone and object is seen as a device and has a assigned host address and communication parameter
+ *  The combination of zone and object is seen as a device descriptor and has a assigned host address and communication parameter
+ *  to send the final command to the target application
  *
  */
 var config ={}
@@ -40,6 +41,11 @@ config = {
 /**
  *  dictionary of words used to define final instruction by filtering spoken text
  **/
+//
+// The following definitions cover only the german language. For another language the keywords need to be translated into that language.
+//
+// German dictionary:
+//
 //  ==>  commands
 config.cmd = {
     'ein' : 'on',
