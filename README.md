@@ -5,7 +5,7 @@ This nodejs modul can be used on a **Raspberry PI 2/3**  to implement a simple s
 
 <img src="https://github.com/MrSponti/s2cmd/blob/master/Microphone.png" width="300" height="250">
 
-You can use USB mic or a 2,4 GHz Wireless Remote with microphone to quickly and easily realize a speech User Interface like Alexa, Google Now or Siri to your software project.
+You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly and easily realize a speech User Interface like Alexa, Google Now or Siri to your software project.
 
 ## Requirements
 - a Raspberry PI Model 2 or 3 with RASPBIAN JESSIE or STRETCH
