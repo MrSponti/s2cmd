@@ -40,14 +40,14 @@ The following properties needs to be configured:
 
 |Option|Description|
 |---|---|
-|``sonusLedGPIO``|You can connect a LED to a GPIO port. The LED is blinking in recording mode and stop blinking when recording mode is stopped. ##Default = 0##  (means ##no## LED connected) |
-|``sonusHotword``| The hotword to start recording mode. Default = ##'pimatic'## (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
+|``sonusLedGPIO``|You can connect a LED to a GPIO port. The LED is blinking in recording mode and stop blinking when recording mode is stopped. `Default = 0`  (means *no* LED connected) |
+|``sonusHotword``| The hotword to start recording mode. `Default = 'pimatic'` (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
 |``googleKeyFilename``|The filename whichinclude the credentials to access the Google Cloud Speech API|
-|``sonusHotwordFile``|The keword definition file stored in folder ../resources. ##Default = '/resources/pimatic.pmdl'##|
+|``sonusHotwordFile``|The keword definition file stored in folder ../resources. `Default = '/resources/pimatic.pmdl'`|
 |``sonusSensitivity``|Sensitivity parameter for hotword detection (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
 |``sonusAudioGain``|Audio gain parameter for hotword detection (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
 |``logPrompt``|Acknowlege message for console log if hotword is detected (only used in debug mode)|
-|``googleLanguage``|Language parameter for use with Google Cloud Speech API. ##Default = 'de_DE'##|
+|``googleLanguage``|Language parameter for use with Google Cloud Speech API. `Default = 'de_DE'`|
 |``googleProjectId``| Your Google project Id name used to access the Google Cloud Speech API.|
 |``googleKeyFilename``|The filename whichinclude the credentials to access the Google Cloud Speech API|
 |``pimaticUser``|User login name configured in ``config.json`` of your **pimatic installation**|
