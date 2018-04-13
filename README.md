@@ -7,15 +7,12 @@ On a **Raspberry PI 2/3** this nodejs modul provide a simple speech recognition 
 
 You can use a 2,4 GHz Wireless Remote with a microphone to quickly and easily realize a speech User Interface like Alexa, Google Now or Siri to your software project.
 
-## To start you need 
+## Requirements
 - a Raspberry PI Model 2 or 3 with RASPBIAN JESSIE or STRETCH
-- a operating USB or wireless RF microphone
-- to setup the Google Cloud Speech API
-## How do I set up Google Cloud Speech API?
-
-Follow [these instructions](https://cloud.google.com/speech/docs/getting-started).
-
-
+- a operating USB or wireless RF microphone (you should test the micro with 'arecord')
+- access to the Google Cloud Speech API
+   Follow [these instructions](https://cloud.google.com/speech/docs/getting-started) in case you need to setup an account.
+- node v6.x (use nvm to run pimatic and s2cmd in parallel)
 
 ## Installation
 
@@ -36,6 +33,25 @@ npm install
 ```
 
 Configure the module by editing the configuration file `config.js`.
+
+## Configuration options
+
+The following properties needs to be configured:
+
+|Option|Description|
+|---|---|
+|``sonusLedGPIO``|You can connect a LED to a GPIO port. The LED is blinking in recording mode and stop blinking when recording mode is stopped. ##Default = 0##  (means ##no## LED connected) |
+|``sonusHotword``| The hotword to start recording mode. Default = ##'pimatic'## (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
+|``googleKeyFilename``|The filename whichinclude the credentials to access the Google Cloud Speech API|
+|``sonusHotwordFile``|The keword definition file stored in folder ../resources. ##Default = '/resources/pimatic.pmdl'##|
+|``sonusSensitivity``|Sensitivity parameter for hotword detection (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
+|``sonusAudioGain``|Audio gain parameter for hotword detection (see also [sowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
+|``logPrompt``|Acknowlege message for console log if hotword is detected (only used in debug mode)|
+|``googleLanguage``|Language parameter for use with Google Cloud Speech API. ##Default = 'de_DE'##|
+|``googleProjectId``| Your Google project Id name used to access the Google Cloud Speech API.|
+|``googleKeyFilename``|The filename whichinclude the credentials to access the Google Cloud Speech API|
+|``pimaticUser``|User login name configured in ``config.json`` of your **pimatic installation**|
+|``pimaticPasswd``|Passwd of your specified pimatic user login name|
 
 ## Dependencies
 
