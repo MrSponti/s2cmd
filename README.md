@@ -11,17 +11,27 @@ You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly an
 - a Raspberry PI Model 2 or 3 with RASPBIAN JESSIE or STRETCH
 - a operating USB or wireless RF microphone (you should test the micro with 'arecord')
 - access to the Google Cloud Speech API<br>   Follow [these instructions](https://cloud.google.com/speech/docs/getting-started) in case you need to setup an account.
-- node v6.x (use nvm to run pimatic and s2cmd in parallel)
+- node v6 or higher  (use nvm to run pimatic and s2cmd in parallel)
 
 ## Installation
+After installing the OS you need to check if your microphone is working under ALSA using the recording program **'arecord'**. The USB or wireless RF mic is seen as an additional audio card. For use of the standard audio (card 0) and the mic (card 1) you need to configure these cards as ALSA default devices in *'/etc/asound.conf'*. 
 
-Move to your HOME directory and clone this repository.
+```
+pcm.!default {
+    type asym
+    playback.pcm "plughw:0"
+    capture.pcm  "plughw:1"
+}
+```
+Please consult the internet for details on "How to configure ALSA default devices".
+
+If you have verified that the mic is working, you can start the installation of the s2cmd modul. Move to your HOME directory and clone the repository.
 ```
 cd ~
 git clone https://github.com/MrSponti/s2cmd.git
 ```
 
-Currently you need node v6.x. Ensure that you are running node 6.x and move into the installed folfer 's2cmd' to install the node dependencies.
+Ensure that you are running node 6.x and higher and move into the installed folder 's2cmd' to install the node dependencies.
 ```
 cd ~/s2cmd
 npm install
