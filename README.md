@@ -23,9 +23,9 @@ pcm.!default {
     capture.pcm  "plughw:1"
 }
 ```
-Please consult the internet for details on "How to configure ALSA default devices".
+Please consult the internet for more details on "How to configure ALSA default devices?".
 
-If you have verified that the mic is working, you can start the installation of the s2cmd modul. Move to your HOME directory and clone the repository.
+If you have verified that the mic is working with *'arecord'*, you can start the installation of the s2cmd modul. Move to your HOME directory and clone the repository.
 ```
 cd ~
 git clone https://github.com/MrSponti/s2cmd.git
