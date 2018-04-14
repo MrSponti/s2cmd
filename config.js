@@ -10,8 +10,15 @@
  * ==> 4 elements:      zone:object:attribute:command                
  *        example:      livingroom:light:mainlight:on
  *
- *  The combination of zone and object is seen as a device descriptor and has a assigned host address and communication parameter
- *  to send the final command to the target application
+ *  The combination of zone and object is seen as a service point and has a assigned device address and communication parameter
+ *  to send the final command to that device.
+ *  Example:
+ *                         spoken text:    "pimatic, schalte im Esszimmer das Licht ein"       
+ *       will generate the instruction:     livingroom:light:mainlight:on
+ *     and mapped to the short command:     'press buttonFLon'
+ *     the service point 'livingroom:light' from the config.devices table is than used to send the short command to the device
+ *
+ * ==>  'livingroom:light': {'host': 'pimatic',   'port': 80,   'service': 'pimatic', 'capability': 0},
  *
  */
 var config ={}
@@ -39,14 +46,16 @@ config = {
 }        
 
 /**
- *  dictionary of words used to define final instruction by filtering spoken text
+ *  German dictionary of words used to define final instruction by filtering spoken text
  **/
 //
-// The following definitions cover only the german language. For another language the keywords need to be translated into that language.
+// The following definitions cover only the german language.
+// For another language the german keywords need to be translated and substituted.
 //
 // German dictionary:
 //
 //  ==>  commands
+//
 config.cmd = {
     'ein' : 'on',
     'einschalten': 'on',
@@ -87,9 +96,10 @@ config.cmd = {
     'antenne': 'antenne'
 }
 //        
-// ==> object attributes
+// ==> service object attributes
 //
 //     spoken word : [ translation to attribute, default object, (optional - default zone)]
+//
 config.attribute =   {
     'stehlampe':    ['floorlamp', 'licht', 'livingroom'],
     'mitteilungen': ['message', 'postit','diningroom'],
@@ -110,7 +120,7 @@ config.attribute =   {
     'auf':          ['channel','-']
 }
 //
-//  ==> object
+//  ==> service objects
 //
 //     spoken word : [ translation to object, default zone, default attribute]     
 config.object = {
@@ -125,7 +135,8 @@ config.object = {
     'postit':      ['postit', 'diningroom', 'message']
 }
 //
-// ==> object zones            
+// ==> service zones
+//
 config.zone = {
     'wohnzimmer': 'livingroom',
     'schlafzimmer': 'bedroom',
@@ -147,8 +158,9 @@ config.numbers = {
     'neun':   ['nine','9'],
     'zehn':   ['ten','10']
 }
-//           
-// ==>  mapping table: map full instruction to short instruction            
+         
+// Instruction to short command mapping table: ==> map full instruction to a short command
+//
 config.cmdMap = {  
     'diningroom:postit:message:delete':         'delete',
 //  
@@ -166,9 +178,14 @@ config.cmdMap = {
     'garage:garage:door:close':                 'press close-garage',
 }
 
+//  Service Points (target network devices and related protocols)
+//  -------------------------------------------------------------
 //  capability = 0 --> a short instruction will not send to the last used target device (must be greater 0)
 //              >0 --> a short instruction will be send to the last used target device
-//               2 --> device accept optional words for detailing the attribute information
+//               2 --> device accepts optional words for detailing the attribute information
+//
+//   service point         | hostname             | port       | service name         | device capability |
+//
 config.devices =   {
     'diningroom:speechlog': {'host': 'Infoboard', 'port': 5588, 'service': 'SPEECHLOG', 'capability': 0},
     'diningroom:postit':    {'host': 'Infoboard', 'port': 5588, 'service': 'POSTIT', 'capability': 0},
