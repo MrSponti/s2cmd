@@ -54,7 +54,7 @@ The following properties needs to be configured:
 |``logPrompt``|Acknowlege message for console log if hotword is detected (only used in debug mode)|
 |``googleLanguage``|Language parameter for use with Google Cloud Speech API.<br>`Default = 'de_DE'`|
 |``googleProjectId``| Your Google project Id name used to access the Google Cloud Speech API.|
-|``googleKeyFilename``|The name of the file providing the credentials to access the Google Cloud Speech API<br>This file has to be stored under **'~/s2cmd/resources/** *myGoogleKeyFile.json*|
+|``googleKeyFilename``|The name of the file providing the credentials to access the Google Cloud Speech API<br>This file has to be stored under **'~/s2cmd/resources/***myGoogleKeyFile.json***'**|
 |``pimaticUser``|User login name configured in ``config.json`` of your **pimatic installation**|
 |``pimaticPasswd``|Passwd of your specified pimatic user login name|
 
