@@ -5,7 +5,11 @@
   "main": "s2cms.js",
   "scripts": {
     "test": "-"
-  },
+  }
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/MrSponti/s2cmd"
+  }
   "keywords": [
     "sonus",
     "snowboy",
