@@ -15,19 +15,15 @@ You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly an
 
 ## Installation
 
-Create a installation folder and navigate into this folder:
+Move to your HOME directory and clone this repository.
 ```
-mkdir ~/s2cmd
-cd ~/s2cmd
-```
-
-Clone this repository:
-```
+cd ~
 git clone https://github.com/MrSponti/s2cmd.git
 ```
 
-Install the node dependencies.
+Currently you need node v6.x. Ensure that you are running node 6.x and move into the installed folfer 's2cmd' to install the node dependencies.
 ```
+cd ~/s2cmd
 npm install
 ```
 
