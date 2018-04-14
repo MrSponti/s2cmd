@@ -10,8 +10,7 @@ You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly an
 ## Requirements
 - a Raspberry PI Model 2 or 3 with RASPBIAN JESSIE or STRETCH
 - a operating USB or wireless RF microphone (you should test the micro with 'arecord')
-- access to the Google Cloud Speech API
-   Follow [these instructions](https://cloud.google.com/speech/docs/getting-started) in case you need to setup an account.
+- access to the Google Cloud Speech API<br>   Follow [these instructions](https://cloud.google.com/speech/docs/getting-started) in case you need to setup an account.
 - node v6.x (use nvm to run pimatic and s2cmd in parallel)
 
 ## Installation
@@ -64,9 +63,10 @@ pi@phoscon:~/s2cmd $ s2cmd.js debug
        Instruction: >>livingroom:light:mainlight:on<<
     mapped command: >>press buttonWZon<<
     send to target: pimatic:80 pimatic press buttonWZon
+               
                Say: pimatic ...
 ```
-The example above shows the result of the spoken text `pimatic - schalte im Wohnzimmer das Licht ein`. The spoken text is translated by using the Google Cloud Speech API and afterwards parsed through a filter creating the command `livingroom:light:mainlight:on`. After mapping the instruction to a pimatic action string, using a the mapping table defined in **'config.js'**,  the mapped command is send to the target device defined for the service point `livingroom:light` in the **config.devices** table. The use of the mapping table is optional. In case that there is no entry for the parsed instruction, the modul send a service request to the target device found in the **config.devices** table. This table also defines the protocol to use for the communication to the target device. With this mechanism it would be easy to implement other communication protocols like e.q. MQTT. In the examle the entry in the **config.devices** table include the required information to send a HTTP POST request to the pimatic REST API.
+The example above shows the result of the spoken text `pimatic - schalte im Wohnzimmer das Licht ein`. The spoken text is translated by using the Google Cloud Speech API and afterwards parsed through a filter creating the command `livingroom:light:mainlight:on`. After mapping the instruction to a pimatic action string, by using a mapping table defined in **'config.js'**,  the mapped command is send to the target device defined for the service point `livingroom:light` in the **config.devices** table. The use of the mapping table is optional. In case that there is no entry for the parsed instruction, the modul send a service request to the target device found in the **config.devices** table. This table also defines the protocol to use for the communication to the target device. With this mechanism it would be easy to implement other communication protocols like e.q. MQTT. In the examle the entry in the **config.devices** table include the required information to send a HTTP POST request to the pimatic REST API.
 
 ## Dependencies
 
