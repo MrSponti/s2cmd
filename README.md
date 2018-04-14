@@ -47,7 +47,6 @@ The following properties needs to be configured:
 |---|---|
 |``sonusLedGPIO``|You can connect a LED to a Raspberry GPIO port (BCM). The LED is blinking in recording mode and stop blinking when recording mode is stopped.<br>`Default = 0`  (means *no* LED connected) |
 |``sonusHotword``| The hotword to start recording mode.<br>`Default = 'pimatic'` (see also [snowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
-|``googleKeyFilename``|The filename whichinclude the credentials to access the Google Cloud Speech API|
 |``sonusHotwordFile``|The keword definition file stored in folder ../resources.<br>`Default = '/resources/pimatic.pmdl'`|
 |``sonusSensitivity``|Sensitivity parameter for hotword detection.<br>`Default = 0.5`  (see also [snowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
 |``sonusAudioGain``|Audio gain parameter for hotword detection.<br>`Default = 2.0`  (see also [snowboy hotword detection](https://github.com/Kitt-AI/snowboy))|
