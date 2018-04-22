@@ -75,7 +75,7 @@ The example above shows the result of the spoken text `pimatic - schalte im Wohn
 
 ## Customizing
 For a programmer it should be easy to implement new commands and protocols. To shorten the spoken instructions, default values for objects and attributes can be defined in the `config.js` file.<br>
-Example:  The spoken words *'schalte das Radio ein'* will expand to the instruction *'dinningroom:radio:-'on'* as the object *radio* has assigned the default zone *dinningroom*. Additionally, in case a zone is missing in the spoken text, the recognized command will be expand by the previous service point (target device),  if the defined capability for that service point is defined >0 in the config file.
+Example:  The spoken words *'schalte das Radio ein'* will expand to the instruction *dinningroom: radio:-on* as the object *radio* has assigned the default zone *dinningroom*. Additionally, in case a zone is not specified in the spoken text, the recognized command will send to the previous service point (target device),  if the parameter capability for that service point is defined >0 in the config file.
 
 Using s2cmd in debug mode and a closer look to the `config.js` file should make the approch more transparent.
 
