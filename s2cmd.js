@@ -8,15 +8,21 @@
  *  -  snowboy hotword recognition
  *  -  the Google Cloud Speech API
  *
- * (c) Mr. Sponti       latest update: 13.04.2018
+ * With a wireless remote like the "Zeepin TZ MX6 2,4 GHz", the Google Cloud Speech API
+ * can be triggered by pushing the microphone button. In this case the microphone is not permanent listen for 
+ * detecting the hotword. 
+ *
+ * (c) Mr. Sponti       latest update: 22.04.2018
  */
 
-// word dictionary providing definitions to build a unique device control instruction
+// load config parametervand the word dictionary for word filtering and to build a unique device instruction
 var config = require('./config')                       
 
-var lastTargetDevice = '-'
-//------------------------------------------------------------------------------------------------
-//  text filter to identify keywords for building the final unique device control instruction
+var lastTarget = {};
+lastTarget.device = '-';
+
+//---------------------------------------------------------------------------------------------------------------------
+//  text filter to identify keywords for building the final unique device  instruction
 //
 function textToInstruction(text){
 
@@ -32,7 +38,7 @@ function textToInstruction(text){
  
   var words = text.trim().toLowerCase().split(' '); 
 
-  // filter words into instruction elements ...
+  // filter received words into instruction elements ...
   //
   // every instruction is build by   
   // ==> 4 elements:      zone:object:attribute:command                
@@ -110,17 +116,23 @@ function textToInstruction(text){
   // determine target device and command to send ...
   //
   var target = {};
-  if (instruction.command !== '-') {
-      if (targetKey === '-:-' && lastTargetDevice !== '-') {
-          target.device  = lastTargetDevice;
-      } else if( targetKey in config.devices ){              // get device address information
-          target.device  = config.devices[targetKey];
-          if (targetInstruction in config.cmdMap) {          // if a shortcut exist, map instruction to that shortcut command
-              instruction.attribute = '-';
-              instruction.command = config.cmdMap[targetInstruction];
-              if (DEBUG) {console.log('    mapped command: >>' + instruction.command + '<<')}                
-          }
+  target.device = '-';
+  target.device.capability = -1;
+  target.message = '-';
+  target.ok = false; 
+  target.attribute = instruction.attribute;
+    
+  if(targetKey in config.devices){                        // get device address information
+      target.device  = config.devices[targetKey];
+      if (targetInstruction in config.cmdMap) {           // if a shortcut exist, map instruction to that shortcut command
+          instruction.attribute = '-';
+          instruction.command = config.cmdMap[targetInstruction];
+          if (DEBUG) {console.log('    mapped command: >>' + instruction.command + '<<')}                
       }
+  } else if (targetKey === '-:-' && lastTarget.device !== '-') {
+      target.device = lastTarget.device;
+  }
+  if (instruction.command !== '-') {      
       // for devices in category '2' or higher --> add all substantives from received text to the end of the instruction
       var optAttr = '';
       if( target.device ){
@@ -141,19 +153,31 @@ function textToInstruction(text){
       if ( optAttr.length > 0 ) {
           instruction.command = instruction.command + ' ' + optAttr.trim();
       }
-
+      // build final message to send from attribute and command
       if (instruction.attribute !== '-') {
           target.message = instruction.attribute + ' ' + instruction.command;
       } else {
           target.message = instruction.command;
       }
   }
+  
+  // check if we have a valid address descriptor and a message to send to target
+  if ( target.device !== '-' ){
+    if ( target.message !== '-') {
+      target.ok = true;
+    }
+    // keep target in mind in case that the next message is a short cut command without a service point
+    if ( target.device.capability > 0 ) {
+      lastTarget = target
+    }
+  }
+  
   return target
 }
 
-//-----------------------------------------------------------------------------
-// "sendDeviceRequest" - send an instruction to  the target device
-//-----------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
+// "sendDeviceRequest" - send an instruction to the target device
+//
 function sendDeviceRequest(target,targetMessage){  
   
   if (typeof(target) === 'string') {                              
@@ -163,12 +187,11 @@ function sendDeviceRequest(target,targetMessage){
     target.message = targetMessage
   }
   if (target.device.capability > 0) {
-      lastTargetDevice  = target.device;
-  }   
-
+    lastTarget  = target;
+  }
   if (DEBUG) {
-      console.log('    send to target: ' + target.device.host+':'+target.device.port+' '+target.device.service+' '+target.message);
-      //return
+      console.log('    send to target: ' + target.device.host+':'+target.device.port+' '+target.device.service+' '+target.message+'  capability: '+target.device.capability);
+      if (NOACTION) {return}
   }
   if ( target.device.service === 'pimatic' ){
     target.pimaticUser = config.pimaticUser;
@@ -180,9 +203,9 @@ function sendDeviceRequest(target,targetMessage){
     sendToNSH(target);
   }
 }
-//-----------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 // send instruction to pimatic to trigger action
-//-----------------------------------------------------------------------------
+//
 const request = require('request');
 
 function sendToPimatic(target) {
@@ -204,9 +227,9 @@ function sendToPimatic(target) {
   });
 }
 
-//-----------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 // use socket client to send an instruction to a (target device) 
-//-----------------------------------------------------------------------------
+//
 var net = require('net');
 
 function sendToNSH(target){
@@ -231,7 +254,7 @@ function sendToNSH(target){
     console.log('       *** socket ERROR ***');
   });
 }
-//------------------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------------------------
 //  initialize use of GPIO connected LED
 //
 var Gpio = require('onoff').Gpio
@@ -263,13 +286,15 @@ function initLed(pin){
   return led
 }
 
-//------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------
 //  Sonus speech recognition modul
 //
 var args = process.argv.slice(2)
 
 DEBUG = false
+NOACTION = false
 if(args[0] === 'debug'){DEBUG = true}
+if(args[1] === 'noaction'){NOACTION = true}
 
 var led = initLed(config.sonusLedGPIO)                                // initialize GPIO for use of LED 
 
@@ -287,19 +312,19 @@ const sonus = Sonus.init({ hotwords, language, audioGain, recordProgram: "arecor
 Sonus.start(sonus)                                                    // start waiting on a hotword
 led.blink(4)                                                          // notify user by blinking LED                                                         // notify user by blinking LED
 
-if(DEBUG){console.log('               Say: ' + hotwords[0].hotword +' ...')}
+if(DEBUG){console.log('               Say: ' + hotwords[0].hotword +' or press button microphone ...')}
 
 // event: hotword detected ...
 sonus.on('hotword', (index, keyword) => {
   led.on()                                                            // switch LED on to indicate recording mode
-  if(DEBUG){console.log('           '+ keyword +':  '+ config.logPrompt)}
+  if(DEBUG){console.log('         triggered:  '+ config.logPrompt)}
 })
 
 // event: final result from Google speech API received ...
 sonus.on('final-result', result => {
   if(DEBUG){console.log("      Final Result: >>" + result +"<<")}
   target = textToInstruction(result)                                  // filter device instruction from recognized text  
-  if( target.device ){                                                // in case we have a valid instruction 
+  if( target.ok ){                                                    // in case we have a valid instruction 
     led.blink(4)                                                      // acknowledge by LED blinking and
     sendDeviceRequest(target);                                        // send command to target device 
   }
@@ -309,15 +334,57 @@ sonus.on('final-result', result => {
 // event: an error occured ...
 sonus.on('error', error => {
  // output error message
+  Sonus.stop();
   var dt = new Date();
   timestamp = dt.getDate()+'.'+(dt.getMonth()+1)+'.'+dt.getFullYear()+'  '+dt.getHours()+':'+dt.getMinutes()
   console.log(timestamp +': Sonus error')
   console.log(error)
-  
+  Sonus.start(sonus)
   cleanup();
 })
 
 function cleanup(){
   led.off()                                                             // switch LED off and wait on next instruction
-  if(DEBUG){console.log('               Say: ' + hotwords[0].hotword +' ...')}
+  if(DEBUG){console.log('               Say: ' + hotwords[0].hotword +' or press button microphone ...')}
+}
+
+//---------------------------------------------------------------------------------------------------------------------
+// Input event handler for Zeepin TZ MX6 2,4 GHz Wireless Remote
+//
+var InputEvent = require('input-event');
+
+const event0 = new InputEvent('/dev/input/'+config.eventFiles['kbd']);
+const event1 = new InputEvent('/dev/input/'+config.eventFiles['mouse']);
+
+event0.on('data', function(buffer){
+  eventReceived(buffer)
+});
+
+event1.on('data', function(buffer){
+  eventReceived(buffer)
+});
+
+function eventReceived(buffer){
+  //console.log('Key : ', config.KeyCode[buffer.code],'  value: ',buffer.value) 
+  if (buffer.code in config.KeyCode){
+    if(buffer.value === 1){
+      if(config.KeyCode[buffer.code] === 'micro'){
+        // on button "microphone" pressed, we start streaming to Google Cloud Speech API
+        Sonus.trigger(sonus, 0, 'triggered')
+      }
+      else {
+        // all other buttons will be send as short cut to the last used device
+        var target = {};
+        if (lastTarget.device !== '-'){
+          target.device  = lastTarget.device;
+          target.attribute = lastTarget.attribute;
+          //target.message = target.attribute + ' ' + config.RFkeyCode[buffer.code]              # to implement in next version
+          target.message = config.KeyCode[buffer.code]
+          if(DEBUG){console.log(' button on key pad: ' + config.KeyCode[buffer.code])};
+          sendDeviceRequest(target)
+          if(DEBUG){console.log('               Say: ' + hotwords[0].hotword +' or press button microphone ...')}
+        }
+      }
+    }
+  }
 }
