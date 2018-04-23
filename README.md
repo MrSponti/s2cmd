@@ -5,7 +5,7 @@ This nodejs modul can be used on a **Raspberry PI 2/3**  to implement a simple s
 
 <img src="https://github.com/MrSponti/s2cmd/blob/master/Microphone.png" width="300" height="250">
 
-You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly and easily realize a speech User Interface like Alexa, Google Now or Siri to your software project. With a wireless RF remote like the "Zeepin TZ MX6 2,4 GHz", the microphone is only active if you push the related button and **not permanent listening** for a hotword. If you push the microphon button you don't need to say the hotword as the Google Cloud Speech API is triggered by this button and your speech is then directly streamed to the recognition service.
+You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly and easily realize a speech User Interface like Alexa, Google Now or Siri to your software project. With a wireless RF remote like the ["Zeepin TZ MX6 2,4 GHz"](https://de.aliexpress.com/item/Zeepin-TZ-MX6-A-2-4GHz-Wireless-Intelligent-Wireless-Romote-Control-Voice-Control-for-smart-TV/32796526519.html), the microphone is only active if you push the related button and **not permanent listening** for a hotword. If you push the microphon button you don't need to say the hotword as the Google Cloud Speech API is triggered by this button and your speech is then directly streamed to the recognition service.
 
 ## Requirements
 - a Raspberry PI Model 2 or 3 with RASPBIAN JESSIE or STRETCH
