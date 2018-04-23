@@ -14,7 +14,7 @@ You can use a USB mic or a 2,4 GHz Wireless Remote with microphone to quickly an
 - node v6 or higher  (use nvm to run pimatic v0.9 and s2cmd in parallel)
 
 ## Installation
-After installing the OS you need to check if your microphone is working under ALSA using the recording program **'arecord'**. The USB or wireless RF mic is seen as an additional audio card. For use of the standard audio (card 0) and the mic (card 1) you need to configure these cards as ALSA default devices in *'/etc/asound.conf'*. 
+After installing the OS you need to check if your microphone is working under ALSA using the recording program **'arecord'**. The USB or wireless RF mic is handled by the OS as an additional audio card. For use of the standard audio (card 0) for playback and the mic (card 1) for recording, you need to configure these cards as ALSA default devices in *'/etc/asound.conf'*. 
 
 ```
 pcm.!default {
@@ -25,19 +25,20 @@ pcm.!default {
 ```
 Please consult the internet for more details on "How to configure ALSA default devices?".
 
-If you have verified that the mic is working with *'arecord'*, you can start the installation of the s2cmd modul. Move to your HOME directory and clone the repository.
+If you have verified that the mic is working with *'arecord'*, you need to ensure that node v6.x or higher is available. If you have already installed pimatic and node v4.x, visit the [Node Version Manager](https://github.com/creationix/nvm) on github to install **nvm** and a node version 6 or higher (e.q. node v8.x (lts)).<br> Now you can start the installation of the s2cmd modul. Move to your HOME directory and clone the repository.
 ```
 cd ~
 git clone https://github.com/MrSponti/s2cmd.git
 ```
 
-Ensure that you are running node 6.x and higher and move into the installed folder 's2cmd' to install the node dependencies.
+Ensure that node 6.x or higher is used in your current environment and move into the installed folder 's2cmd' to install the node dependencies.
 ```
 cd ~/s2cmd
 npm install
 ```
 
-Configure the module by editing the configuration file `config.js`.
+Before you start further configuration steps, ensure that you have your Google API credentials (Project ID, Key file) available.
+Configure the module by editing the configuration file `config.js`. 
 
 ## Configuration options
 
